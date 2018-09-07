@@ -1,0 +1,16 @@
+{
+	"name": "0-webpack",
+	"version": "1.0.0",
+	"private": true,
+	"license": "MIT",
+	"dependencies": {
+		"path": "^0.12.7"
+	},
+	"devDependencies": {
+		"webpack": "^4.17.2",
+		"webpack-cli": "^3.1.0"
+	},
+	"scripts": {
+		"build": "webpack"
+	}
+}
