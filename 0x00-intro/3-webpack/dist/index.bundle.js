@@ -104,7 +104,7 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!\n * jQ
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n$(document).ready(function () {\n\tconst body = $(\"body\");\n\tconst h1 = document.createElement('h1');\n\t$(h1).text(\"Holberton School\");\n\tbody.append(h1);\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n\n$(document).ready(function () {\n  document.title = 'Holberton School webpack';\n  const h1 = document.createElement('h1');\n  $(h1).text('Holberton School');\n  $('body').append(h1);\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ })
 
