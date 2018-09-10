@@ -10,6 +10,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
+			title: 'Holberton School webpack',
 			filename: 'index.html',
 			path: path.resolve(__dirname, 'dist')
 		}),
