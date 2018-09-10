@@ -1,9 +1,6 @@
 import React from 'react';
 
 export default class App extends React.Component {
-	   setTitle() {
-	   			
-	   }	   
 	render() {
 		document.title = "Holberton School webpack";
 		return (
