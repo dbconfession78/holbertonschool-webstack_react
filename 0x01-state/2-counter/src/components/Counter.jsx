@@ -2,11 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types'
 
 class Counter extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			value: 89
+		}
+	}
 	render() {
 		return (
-			<div>{this.props.value}</div>
+			<div>{this.state.value}</div>
 		)
-	};
+	}
 }
 
 Counter.propTypes = {
@@ -16,9 +22,5 @@ Counter.propTypes = {
 Counter.defaultProps = {
 	value: 0
 }
-
-
-
-
 
 export default Counter;
