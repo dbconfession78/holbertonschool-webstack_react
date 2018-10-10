@@ -10,7 +10,6 @@ export default class App extends React.Component {
         }
         this.handleInputModified = this.handleInputModified.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        // this.handleItemClick = this.handleItemClick.bind(this)
     }
     render() {
         return (
@@ -29,13 +28,8 @@ export default class App extends React.Component {
                         )
                     })}
                 </ul>
-                {/* <button onClick={this.testButtonActionPerformed}>Test</button> */}
             </div>
         );
-    }
-
-    testButtonActionPerformed() {
-
     }
 
     handleSubmit(event) {
