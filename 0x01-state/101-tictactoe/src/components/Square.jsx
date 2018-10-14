@@ -5,23 +5,14 @@ export default class Square extends React.Component {
         super(props);
         this.state = {
             value: this.props.value,
-            player: "X",
         }
         this.didReset = false
-        this.onClick = this.onClick.bind(this);
-        this.onReset = this.onReset.bind(this);
         this.player = this.props.player;
-
     }
 
     onClick(event) {
         this.props.onClick(this.props.player, this.props.id)
         this.setState({value: this.props.player})
-    }
-
-    onReset() {
-        alert()
-        this.setState({value: "", player: "X"});
     }
 
     render() {
@@ -30,24 +21,19 @@ export default class Square extends React.Component {
             border: 'black solid 1px',
             width: squareSize,
             height: squareSize,
-            margin: 'auto',
             textAlign: 'center',
-            verticalAlign: 'middle',
             lineHeight: '40px'
         }
         return (
-            <div onClick={this.onClick} style={squareStyle} className="Square">
+            <div onClick={this.onClick.bind(this)} style={squareStyle}>
                 {this.state.value}
             </div>
         );
     }
 
-    componentDidUpdate() {
+    checkReset() {
         if (this.didReset) {
             this.didReset = false
-
-            // state shouldn't be set like this.
-            this.props.state.squares= [["", "", ""], ["", "", ""], ["", "", ""]];
             this.props.state.shouldReset = false
         }
         if (this.props.state.shouldReset) {
@@ -55,11 +41,11 @@ export default class Square extends React.Component {
         }
         if (this.didReset) {
             this.setState({value: ""})
+            this.player = "X"
         }
     }
 
-    componentDidMount() {
-        console.log(this.props.parProps)
-        this.player = "X"
+    componentDidUpdate() {
+        this.checkReset()
     }
 }

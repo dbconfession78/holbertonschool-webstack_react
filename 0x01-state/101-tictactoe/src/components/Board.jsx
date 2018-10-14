@@ -9,25 +9,21 @@ export default class Board extends React.Component {
             player: "X",
             shouldReset: false,
         }
-        this.squareClicked = this.squareClicked.bind(this)
-        this.TEST_CLICK = this.TEST_CLICK.bind(this)
-        this.onResetClick = this.onResetClick.bind(this)
-        // this.shouldReset = false;
-
     }
 
-    setPlayer(player) {
-        this.setState({player: this.state.player === 'X' ? 'O' : 'X'})
-    }
     squareClicked(player, id) {
         const col = parseInt(id[0])
         const row = parseInt(id[1])
         let newSquares = this.state.squares
         newSquares[row][col] = player
         this.setState({
-            squares: newSquares
+            squares: newSquares,
+            player: this.state.player === 'X' ? 'O' : 'X'
         })
-        this.setPlayer()
+        const winner = this.checkBoard();
+        if (winner != 0) {
+            alert("Winner: " + winner + "!");
+        }
     }
 
     checkBoard() {
@@ -43,6 +39,7 @@ export default class Board extends React.Component {
         if (winner) {
             alert("Winner: " + winner);
         }
+
         return 0;
     }
 
@@ -68,6 +65,7 @@ export default class Board extends React.Component {
                 return first;
             }
         }
+
         return false;
     }
 
@@ -85,7 +83,11 @@ export default class Board extends React.Component {
     }
 
     resetBoard() {
-        this.setState({shouldReset: true})
+        this.setState({
+            shouldReset: true,
+            player: "X",
+            squares: [["", "", ""], ["", "", ""], ["", "", ""]],
+        })
     }
 
     onResetClick() {
@@ -93,14 +95,7 @@ export default class Board extends React.Component {
     }
 
     TEST_CLICK() {
-
-    }
-
-    componentDidUpdate() {
-        const winner = this.checkBoard();
-        if (winner != 0) {
-            alert("Winner: " + winner + "!");
-        }
+        console.log(this.state.squares)
     }
 
     render() {
@@ -115,7 +110,7 @@ export default class Board extends React.Component {
                         state={this.state}
                         value={this.state.squares[i][j]}
                         player={this.state.player}
-                        onClick={this.squareClicked}
+                        onClick={this.squareClicked.bind(this)}
                         id={i.toString() + j.toString()}
                         key={j}/>
                     )
@@ -125,7 +120,8 @@ export default class Board extends React.Component {
         return (
             <div style={boardStyle} className="Board">
                 {rows}
-                <button onClick={this.onResetClick}>Reset</button>
+                <button onClick={this.onResetClick.bind(this)}>Reset</button>
+                {/* <button onClick={this.TEST_CLICK.bind(this)}>Test</button> */}
             </div>
 
         )
