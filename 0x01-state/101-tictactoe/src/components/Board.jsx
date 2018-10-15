@@ -3,48 +3,33 @@ import Square from './Square.jsx'
 
 export default class Board extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            squares: [["", "", ""], ["", "", ""], ["", "", ""]],
-            player: "X",
-            shouldReset: false,
+            boardState: [['', '', ''], ['', '', ''], ['', '', '']],
+            player: this.props.player
         }
-    }
-
-    squareClicked(player, id) {
-        const col = parseInt(id[0])
-        const row = parseInt(id[1])
-        let newSquares = this.state.squares
-        newSquares[row][col] = player
-        this.setState({
-            squares: newSquares,
-            player: this.state.player === 'X' ? 'O' : 'X'
-        })
-        const winner = this.checkBoard();
-        if (winner != 0) {
-            alert("Winner: " + winner + "!");
-        }
+        this.initialState = [['', '', ''], ['', '', ''], ['', '', '']];
+        this.gameEnded = false;
     }
 
     checkBoard() {
         let winner = this.checkHorizontal();
         if (winner) {
-            alert("Winner: " + winner);
+            return winner;
         }
-        winner = this.checkVertical();
+        winner = this.checkVertical()
         if (winner) {
-            alert("Winner: " + winner);
+            return winner;
         }
-        winner = this.checkDiagonal();
+        winner = this.checkDiagonal()
         if (winner) {
-            alert("Winner: " + winner);
+            return winner;
         }
-
-        return 0;
+        return false
     }
 
     checkHorizontal() {
-        const rows = this.state.squares
+        const rows = this.state.boardState
         for(let i=0; i < rows.length; i++) {
             const row = rows[i];
             const first = row[0];
@@ -56,7 +41,7 @@ export default class Board extends React.Component {
     }
 
     checkVertical() {
-        const rows = this.state.squares;
+        const rows = this.state.boardState;
         for(let col=0; col < rows[0].length; col++) {
             const first = rows[0][col];
             const second = rows[1][col];
@@ -70,60 +55,75 @@ export default class Board extends React.Component {
     }
 
     checkDiagonal() {
-        const first = this.state.squares[0][0]
-        if (first !== "" && this.state.squares[1][1] === first && this.state.squares[2][2] === first) {
+        const rows = this.state.boardState;
+        const first = rows[0][0]
+        if (first !== "" && rows[1][1] === first && rows[2][2] === first) {
             return first;
         }
-        const third = this.state.squares[0][2]
-        if (third !== "" && this.state.squares[1][1] == third && this.state.squares[2][0] == third) {
+        const third = rows[0][2]
+        if (third !== "" && rows[1][1] == third && rows[2][0] == third) {
             return third;
         }
 
         return false;
     }
 
-    resetBoard() {
-        this.setState({
-            shouldReset: true,
-            player: "X",
-            squares: [["", "", ""], ["", "", ""], ["", "", ""]],
-        })
+    onSquareClick(row, col) {
+        if (this.gameEnded) {
+            alert('This game has ended. Please click reset to start a new one')
+            return
+        }
+        let newBoardState = this.state.boardState;
+        if (newBoardState[row][col] !== "") {
+            alert('This tile has already been played. Please select another one')
+        } else {
+            this.props.onClick()
+            newBoardState[row][col] = this.state.player
+            this.setState({
+                boardState: newBoardState,
+                player: this.state.player === 'X' ? 'O' : 'X'
+            })
+            const winner = this.checkBoard()
+            if (winner) {
+                this.gameEnded = true;
+                alert("Winner: " + winner)
+            }
+        }
     }
 
     onResetClick() {
-        this.resetBoard();
+        this.gameEnded = false;
+        this.setState({
+            boardState: this.initialState,
+            player: "X"
+        })
     }
 
-    TEST_CLICK() {
-        console.log(this.state.squares)
+    testClick() {
+        console.log(this.state.boardState)
     }
 
     render() {
-        let c = 1;
-        let boardStyle = {
+        const boardStyle = {
             display: 'inline-flex',
         }
-        let rows = this.state.squares.map((row, i) =>
-            <div key={i} className='row'>
-                {row.map((square, j) =>
-                    <Square
-                        state={this.state}
-                        value={this.state.squares[i][j]}
-                        player={this.state.player}
-                        onClick={this.squareClicked.bind(this)}
-                        id={i.toString() + j.toString()}
-                        key={j}/>
-                    )
+        const tiles = this.state.boardState.map((column, i) =>
+            <div key={i} className='column'>
+                {column.map((tile, j) =>
+                    <Square onClick={this.onSquareClick.bind(this)}
+                            id={j.toString() + i.toString()}
+                            key={j}
+                            value={this.state.boardState[j][i]}
+                    />)
                 }
             </div>
-        );
+        )
         return (
-            <div style={boardStyle} className="Board">
-                {rows}
-                <button onClick={this.onResetClick.bind(this)}>Reset</button>
-                {/* <button onClick={this.TEST_CLICK.bind(this)}>Test</button> */}
+            <div className="Board" style={boardStyle}>
+                {tiles}
+                <button onClick={this.onResetClick.bind(this)} id='reset-button'>Reset</button>
+                {/* <button onClick={this.testClick.bind(this)}>Test</button> */}
             </div>
-
         )
     }
 }
